@@ -17,8 +17,14 @@ def main():
     print("Batch size:", constants.BATCH_SIZE)
 
     # Initalize dataset and model. Then train the model!
-    train_dataset = StartingDataset()
+    
+    train_dataset = StartingDataset(train = True)
     val_dataset = StartingDataset()
+    print(len(train_dataset))
+    print(len(val_dataset))
+    
+
+    '''
     model = StartingNetwork()
     starting_train(
         train_dataset=train_dataset,
@@ -27,7 +33,7 @@ def main():
         hyperparameters=hyperparameters,
         n_eval=constants.N_EVAL,
     )
-
+'''
 
 if __name__ == "__main__":
     main()
