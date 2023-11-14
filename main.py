@@ -18,13 +18,12 @@ def main():
 
     # Initalize dataset and model. Then train the model!
     
+    # initializes train dataset as 80% of og dataset
     train_dataset = StartingDataset(train = True)
+    # initializes validation dataset as 20% of og dataset
     val_dataset = StartingDataset()
-    print(len(train_dataset))
-    print(len(val_dataset))
     
 
-    '''
     model = StartingNetwork()
     starting_train(
         train_dataset=train_dataset,
@@ -33,7 +32,6 @@ def main():
         hyperparameters=hyperparameters,
         n_eval=constants.N_EVAL,
     )
-'''
 
 if __name__ == "__main__":
     main()

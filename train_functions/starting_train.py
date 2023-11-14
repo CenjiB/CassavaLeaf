@@ -32,9 +32,9 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
     loss_fn = nn.CrossEntropyLoss()
 
     step = 0
+    model.train()
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
-
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # TODO: Backpropagation and gradient descent
@@ -46,6 +46,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
+            # training loss
             print('Epoch: ', epoch, 'Loss: ', loss.item())
 
             # Periodically evaluate our model + log to Tensorboard
@@ -58,12 +59,12 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
                 # Don't forget to turn off gradient calculations!
-                evaluate(train_loader, outputs, loss)
-                evaluate(val_loader, outputs, loss) 
+                
+                evaluate(val_loader, outputs, loss_fn) 
 
-            step += 1
+                step += 1
 
-        print()
+    print('End of epoch accuracy:', compute_accuracy(outputs, labels), '%')
 
 
 def compute_accuracy(outputs, labels):
@@ -89,5 +90,14 @@ def evaluate(loader, model, loss):
 
     TODO!
     """
-    model.train() # used for training set
     model.eval() # used for validation set
+    for batch in tqdm(loader):
+            # TODO: Backpropagation and gradient descent
+            images, labels = batch
+           
+            outputs = model(images)
+
+            val_loss = loss(outputs, labels)
+            
+            print('Val Loss: ', val_loss.item(), 'Val Accuracy: ', compute_accuracy(outputs, labels), '%')
+    

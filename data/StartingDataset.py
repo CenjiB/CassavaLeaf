@@ -14,8 +14,9 @@ class StartingDataset(torch.utils.data.Dataset):
 
     def __init__(self, train = False): 
         self.dataframe = pd.read_csv("/Users/haleigh/haleigh/cassava-leaf-disease-classification/train.csv")
+        # FIRST ORDER OF BUSINESS 11/15 REDO SPLITTING OF DATA
         if train == True:
-            self.dataframe = self.dataframe.iloc[1:math.floor((0.8*len(self.dataframe)))]
+            self.dataframe = self.dataframe.iloc[0:math.floor((0.8*len(self.dataframe)))]
         elif train == False:
             self.dataframe = self.dataframe.iloc[math.floor(0.8*len(self.dataframe)):]
         self.image_id = self.dataframe["image_id"]
@@ -23,16 +24,14 @@ class StartingDataset(torch.utils.data.Dataset):
 
 
     def __getitem__(self, index):
-        image_id = self.image_id[index]
+        image_id = self.image_id[index] # IS THIS ACCESSING ALL DATA AS OPPOSED TO JUST TRAINING OR JUST VAL
         label = self.label[index]
         classification = (image_id, label)
         im = Image.open('/Users/haleigh/haleigh/cassava-leaf-disease-classification/train_images/' + image_id)
         resize_img = im.resize((400, 300))
         convert_tensor = torchvision.transforms.ToTensor() # creates function that convert im tuple to tensor
         return(convert_tensor(resize_img), label)
-        # resize_img.show()
 
-        return classification
 
     def __len__(self):
         return len(self.image_id)
