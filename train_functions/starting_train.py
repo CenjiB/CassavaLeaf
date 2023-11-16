@@ -60,7 +60,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
                 # Log the results to Tensorboard.
                 # Don't forget to turn off gradient calculations!
                 
-                evaluate(val_loader, outputs, loss_fn) 
+                evaluate(val_loader, model, loss_fn) 
 
                 step += 1
 
@@ -90,14 +90,16 @@ def evaluate(loader, model, loss):
 
     TODO!
     """
-    model.eval() # used for validation set
-    for batch in tqdm(loader):
-            # TODO: Backpropagation and gradient descent
-            images, labels = batch
-           
-            outputs = model(images)
+    model.eval() # sets mode to evaluate
 
-            val_loss = loss(outputs, labels)
+    # will use in val_loader and iterate through batches of 32
+    for batch in tqdm(loader):
+        
+        images, labels = batch
             
-            print('Val Loss: ', val_loss.item(), 'Val Accuracy: ', compute_accuracy(outputs, labels), '%')
+        outputs = model(images)
+
+        val_loss = loss(outputs, labels)
+            
+        print('Val Loss: ', val_loss.item(), 'Val Accuracy: ', compute_accuracy(outputs, labels), '%')
     
