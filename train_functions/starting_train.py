@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
+import numpy as np
 
 
 def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
@@ -65,7 +66,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
 
                 step += 1
 
-    print('End of epoch accuracy:', compute_accuracy(outputs, labels), '%')
+        print('End of epoch accuracy:', compute_accuracy(outputs, labels), '%')
 
 
 def compute_accuracy(outputs, labels):
@@ -76,16 +77,14 @@ def compute_accuracy(outputs, labels):
         outputs: [[0,0,0.9,0,0.1], [0.2, ] ...]
         labels:  [2,                1, ... ]
 
-    Example output:
+    Example value returned:
         0.75
     """
 
     # instead of rounding, we want to find index of max element (essentially which disease each leaf most likely has)
-    print(outputs.shape)
-    print(labels.shape)
-    n_correct = (torch.round(outputs) == labels).sum().item() # THIS NEEDS TO CHANGE 11/27
+    n_correct = (torch.argmax(outputs) == labels).sum().item() # checks if model prediction matches label
     n_total = len(outputs)
-    return n_correct / n_total
+    return (n_correct / n_total) * 100
 
 
 def evaluate(loader, model, loss): 
@@ -105,6 +104,6 @@ def evaluate(loader, model, loss):
 
         val_loss = loss(outputs, labels) # uses loss_fn above w/ val outputs and labels
             
-        # validation loss
-        print('Val Loss: ', val_loss.item(), 'Val Accuracy: ', compute_accuracy(outputs, labels), '%')
+    # validation loss
+    print('Val Loss: ', val_loss.item(), 'Val Accuracy: ', compute_accuracy(outputs, labels), '%')
     
