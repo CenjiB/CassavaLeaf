@@ -20,16 +20,16 @@ class StartingNetwork(torch.nn.Module):
         self.pool = nn.MaxPool2d(kernel_size = (2, 3)) #generalize your model
 
         self.flatten = nn.Flatten() # converts image array to one dimension
-        self.fc = nn.Linear(400 * 300 * 3, 5) # image dimensions * num of layers for rgb, num of cassava leave diseases (num of possible predictions)
+        self.fc = nn.Linear(26400, 5) # image dimensions * num of layers for rgb, num of cassava leave diseases (num of possible predictions)
         self.sigmoid = nn.Sigmoid() # returns a number between one and zero for each of the 5 diseases
 
     def forward(self, x): # ADD LAYERS HERE !!!!!!!!!
-        #x = self.act(self.conv1(x))
-        #x = self.pool(x)
-        #x = self.act(self.conv2(x))
-        #x = self.pool(x)
+        x = self.act(self.conv1(x))
+        x = self.pool(x)
+        x = self.act(self.conv2(x))
+        x = self.pool(x)
         x = self.flatten(x)
-        #x = self.drop(x)
+        x = self.drop(x)
         x = self.fc(x)
         x = self.sigmoid(x)
         return x
