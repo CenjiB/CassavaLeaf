@@ -13,9 +13,10 @@ class StartingDataset(torch.utils.data.Dataset):
     """
     # Haleigh - "/Users/haleigh/haleigh/cassava-leaf-disease-classification/train.csv"
     # Daisy - "C:/Users/dwatt/Downloads/cassava-leaf-disease-classification/train.csv"
+    # Benji - "/Users/benjicarrere/.kaggle/cassava-leaf-disease-classification/train.csv"
 
     def __init__(self, train = False): 
-        self.dataframe = pd.read_csv("/Users/haleigh/haleigh/cassava-leaf-disease-classification/train.csv")
+        self.dataframe = pd.read_csv("/Users/benjicarrere/.kaggle/cassava-leaf-disease-classification/train.csv")
         if train == True:
             self.offset = 0 # will add 0 to index line 34
             self.dataframe = self.dataframe.iloc[0:math.floor((0.8*len(self.dataframe)))]
@@ -37,7 +38,7 @@ class StartingDataset(torch.utils.data.Dataset):
         label = self.label[index]
         # print("chk pt 2")
         # classification = (image_id, label)
-        im = Image.open('/Users/haleigh/haleigh/cassava-leaf-disease-classification/train_images/' + image_id)
+        im = Image.open('/Users/benjicarrere/.kaggle/cassava-leaf-disease-classification/train_images/' + image_id)
         resize_img = im.resize((400, 300))
         convert_tensor = torchvision.transforms.ToTensor() # creates function that convert im tuple to tensor
         return(convert_tensor(resize_img), label)
